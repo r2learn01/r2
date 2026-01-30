@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0c15;
+            --card-bg: #161b22;
+            --text-main: #ffffff;
+            --text-dim: #9ca3af;
+            
+            /* Theme Colors */
+            --c-cyan: #39c5bb;   
+            --c-purple: #bd93f9; 
+            --c-pink: #ff79c6;   
+            --c-blue: #8be9fd;   
+            --c-green: #50fa7b;  
+            --c-orange: #ffb86c; 
+            --c-red: #ff5555;    
+
+            /* Fonts - تم توحيد الخط ليكون Outfit لمحاكاة Gemini */
+            --font-brand: 'Outfit', sans-serif;
+            --font-body: 'Outfit', sans-serif; /* تغيير الخط العام */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; 
+            padding-bottom: 40px;
+        }
+
+        /* Language Button */
+        .lang-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: transparent;
+            border: 2px solid var(--c-cyan);
+            color: var(--c-cyan);
+            padding: 8px 18px;
+            border-radius: 50px; /* جعل الأزرار أكثر دائرية مثل Gemini */
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            z-index: 100;
+        }
+
+        .lang-btn:hover {
+            background: var(--c-cyan);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px rgba(57, 197, 187, 0.4);
+        }
+
+        /* --- Header & Logo Modification (New Style) --- */
+        
+        header {
+            margin: 80px 0 60px 0;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* حاوية الشعار الجديدة */
+        .logo-wrapper {
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* تنسيق كلمة R2 الضخمة */
+        .logo-main {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700; /* نفس وزن خط العناوين في Gemini */
+            font-size: 10rem; 
+            line-height: 0.8;
+            color: #ffffff;
+            letter-spacing: -6px; /* تقليل المسافة لجعل الحروف متماسكة */
+            margin: 0;
+            z-index: 1;
+        }
+
+        /* تنسيق كلمة Services في المنتصف */
+        .logo-middle {
+            position: absolute;
+            top: 50%;
+            left: 54%;
+            transform: translate(-50%, -50%);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 12px; /* تباعد كبير جداً للأحرف */
+            color: var(--c-cyan);
+            text-transform: uppercase;
+            background-color: var(--bg-color); /* خلفية بنفس لون الصفحة لعمل تأثير القطع */
+            padding: 5px 20px;
+            z-index: 2;
+            white-space: nowrap;
+        }
+
+        /* Grid Container */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1400px;
+            padding: 20px;
+            margin-bottom: auto; 
+        }
+
+        /* Icons (Cards) */
+        .r2-card {
+            background: rgba(22, 27, 34, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px; /* زوايا أكثر استدارة لتناسب الستايل الجديد */
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .r2-card i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .r2-card span {
+            font-weight: 600;
+            font-size: 1.2rem; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Hover Effects */
+        .r2-card:hover {
+            transform: translateY(-8px);
+            background: rgba(22, 27, 34, 0.9);
+        }
+        
+        /* Color Mapping */
+        .card-learn:hover { border-color: var(--c-cyan); box-shadow: 0 0 30px rgba(57, 197, 187, 0.2); }
+        .card-learn:hover i { color: var(--c-cyan); transform: scale(1.1); }
+        
+        .card-studio:hover { border-color: var(--c-purple); box-shadow: 0 0 30px rgba(189, 147, 249, 0.2); }
+        .card-studio:hover i { color: var(--c-purple); transform: scale(1.1); }
+        
+        .card-design:hover { border-color: var(--c-pink); box-shadow: 0 0 30px rgba(255, 121, 198, 0.2); }
+        .card-design:hover i { color: var(--c-pink); transform: scale(1.1); }
+        
+        .card-ai:hover { border-color: var(--c-blue); box-shadow: 0 0 30px rgba(139, 233, 253, 0.2); }
+        .card-ai:hover i { color: var(--c-blue); transform: scale(1.1); }
+        
+        .card-hacking:hover { border-color: var(--c-green); box-shadow: 0 0 30px rgba(80, 250, 123, 0.2); }
+        .card-hacking:hover i { color: var(--c-green); transform: scale(1.1); }
+        
+        .card-games:hover { border-color: var(--c-orange); box-shadow: 0 0 30px rgba(255, 184, 108, 0.2); }
+        .card-games:hover i { color: var(--c-orange); transform: scale(1.1); }
+        
+        .card-media:hover { border-color: var(--c-red); box-shadow: 0 0 30px rgba(255, 85, 85, 0.2); }
+        .card-media:hover i { color: var(--c-red); transform: scale(1.1); }
+
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: #11131a;
+            border: 1px solid #30363d;
+            padding: 40px;
+            border-radius: 32px;
+            text-align: center;
+            max-width: 800px;
+            width: 95%;
+            max-height: 85vh; 
+            overflow-y: auto; 
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: #0b0c15; }
+        .modal-content::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            z-index: 10;
+        }
+        .close-modal:hover { color: var(--c-red); }
+
+        .modal-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .modal-desc {
+            color: var(--text-dim);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .coming-soon {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 40px 0;
+        }
+
+        /* --- Social Links --- */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            transition: transform 0.2s, color 0.2s;
+        }
+
+        .social-icon:hover { transform: translateY(-5px); }
+        .social-icon.youtube:hover { color: #FF0000; }
+        .social-icon.facebook:hover { color: #1877F2; }
+        .social-icon.instagram:hover { color: #E4405F; }
+        .social-icon.twitter:hover { color: #1DA1F2; } 
+        .social-icon.tiktok:hover { color: #00f2ea; }
+
+        /* --- Design Gallery Grid --- */
+        .design-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .design-card {
+            background: #1c2128;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s;
+        }
+        
+        .design-card:hover {
+            transform: scale(1.05);
+            border-color: var(--c-pink);
+        }
+
+        .design-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            background-color: #2d333b;
+        }
+
+        .design-title {
+            padding: 10px;
+            font-size: 0.8rem;
+            color: #ccc;
+            font-weight: 600;
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 50px;
+            color: #484f58;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--c-purple);
+            color: #000;
+            padding: 14px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .action-btn:hover { background: white; }
+
+        /* RTL Handling */
+        body.rtl { direction: rtl; }
+        body.rtl .lang-btn { left: 25px; right: auto; }
+        body.rtl .close-modal { left: 25px; right: auto; }
+        
+        /* Mobile */
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: repeat(1, 1fr); 
+                width: 80%;
+            }
+            .logo-main { font-size: 6rem; }
+            .logo-middle { font-size: 0.8rem; letter-spacing: 6px; padding: 0 10px; }
+            .design-gallery { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="lang-btn" onclick="toggleLanguage()">AR / EN</button>
+
+    <header>
+        <div class="logo-wrapper">
+            <h1 class="logo-main">R2</h1>
+            <div class="logo-middle">Services</div>
+        </div>
+    </header>
+
+    <div class="grid-container">
+        <div class="r2-card card-learn" onclick="openContent('learn')">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span data-key="learn">R2 Learn</span>
+        </div>
+
+        <div class="r2-card card-studio" onclick="openContent('studio')">
+            <i class="fa-solid fa-layer-group"></i>
+            <span data-key="studio">R2 Studio</span>
+        </div>
+
+        <div class="r2-card card-design" onclick="openContent('design')">
+            <i class="fa-solid fa-pen-nib"></i>
+            <span data-key="design">R2 Design</span>
+        </div>
+
+        <div class="r2-card card-ai" onclick="openContent('ai')">
+            <i class="fa-solid fa-brain"></i>
+            <span data-key="ai">R2 AI</span>
+        </div>
+
+        <div class="r2-card card-hacking" onclick="openContent('hacking')">
+            <i class="fa-solid fa-user-secret"></i>
+            <span data-key="hacking">R2 Hacking</span>
+        </div>
+
+        <div class="r2-card card-games" onclick="openContent('games')">
+            <i class="fa-solid fa-gamepad"></i>
+            <span data-key="games">R2 Games</span>
+        </div>
+
+        <div class="r2-card card-media" onclick="openContent('media')">
+            <i class="fa-solid fa-film"></i>
+            <span data-key="media">R2 Cinematic</span>
+        </div>
+    </div>
+
+    <footer>
+        ALL RIGHTS RESERVED &copy; 2026
+    </footer>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                learn: "R2 Learn",
+                studio: "R2 Studio",
+                ai: "R2 AI",
+                design: "R2 Design",
+                hacking: "R2 Hacking",
+                games: "R2 Games",
+                media: "R2 Cinematic",
+                comingSoon: "COMING SOON",
+                descLearn: "Connect with us on our social platforms to start learning.",
+                descStudio: "Download R2 apps and get the latest news on our Telegram channel.",
+                descDesign: "COMING SOON", //Explore our latest creative design projects.
+                descGen: "This innovative section is currently under development.",
+                sample: "Design Sample"
+            },
+            ar: {
+                learn: "R2 تعليم",
+                studio: "R2 ستوديو",
+                ai: "R2 ذكاء اصطناعي",
+                design: "R2 تصميم",
+                hacking: "R2 هاكينج",
+                games: "R2 ألعاب",
+                media: "R2 ميديا",
+                comingSoon: "قريباً",
+                descLearn: "تواصل معنا عبر منصات التواصل الاجتماعي لبدء التعلم.",
+                descStudio: "حمل تطبيقات R2 واحصل على آخر الأخبار عبر قناتنا على تيليجرام.",
+                descDesign: "استكشف أحدث مشاريع التصميم الإبداعية لدينا.",
+                descGen: "هذا القسم المبتكر قيد التطوير حالياً.",
+                sample: "نموذج تصميم"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            if(currentLang === 'ar') document.body.classList.add('rtl');
+            else document.body.classList.remove('rtl');
+
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if(translations[currentLang][key]) el.innerText = translations[currentLang][key];
+            });
+        }
+
+        function openContent(type) {
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            const t = translations[currentLang];
+            let content = '';
+            let colorVar = `var(--c-${getColorVar(type)})`;
+
+            if (type === 'learn') {
+                content = `
+                    <h2 class="modal-title" style="color: ${colorVar}">${t.learn}</h2>
+                    <p class="modal-desc">${t.descLearn}</p>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@R2learn" target="_blank" class="social-icon youtube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://facebook.com/share/1D23joczdE" target="_blank" class="social-icon facebook"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://instagram.com/r2learn_" target="_blank" class="social-icon instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://x.com/r2learn01" target="_blank" class="social-icon twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://tiktok.com/@r2learn" target="_blank" class="social-icon tiktok"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                `;
+            } else if (type === 'studio') {
+                content = `
+                    <h2 class="modal-title" style="color: ${colorVar}">${t.studio}</h2>
+                    <p class="modal-desc">${t.descStudio}</p>
+                    <a href="https://t.me/r2products" target="_blank" class="action-btn">
+                        <i class="fa-brands fa-telegram"></i> Telegram Channel
+                    </a>
+                `;
+            } else if (type === 'design') {
+                let cardsHTML = '';
+                for(let i=1; i<=15; i++) {
+                    let imgUrl = `https://placehold.co/300x200/252a33/ff79c6?text=Design+${i}`;
+                    cardsHTML += `
+                        <div class="design-card">
+                            <img src="${imgUrl}" alt="Design ${i}" class="design-img">
+                            <div class="design-title">${t.sample} ${i}</div>
+                        </div>
+                    `;
+                }
+                content = `
+                    <h2 class="modal-title" style="color: ${colorVar}">${t.design}</h2>
+                    <p class="modal-desc">${t.descDesign}</p>
+                    <div class="design-gallery">
+                        ${cardsHTML}
+                    </div>
+                `;
+            } else {
+                content = `
+                    <h2 class="modal-title" style="color: ${colorVar}">${t[type]}</h2>
+                    <p class="modal-desc">${t.descGen}</p>
+                    <div class="coming-soon" style="color: ${colorVar}">${t.comingSoon}</div>
+                `;
+            }
+
+            body.innerHTML = content;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function getColorVar(type) {
+            const map = {
+                'learn': 'cyan', 'studio': 'purple', 'ai': 'blue',
+                'design': 'pink', 'hacking': 'green', 'games': 'orange', 'media': 'red'
+            };
+            return map[type];
+        }
+
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>

@@ -173,9 +173,9 @@
 
         /* --- MODIFIED HEADER FOR SUB-PAGES --- */
         .page-header {
-            position: relative; /* Essential for absolute positioning of back button */
+            position: relative; 
             display: flex;
-            justify-content: center; /* Centers the title */
+            justify-content: center; 
             align-items: center;
             max-width: 1200px;
             margin: 0 auto 40px auto;
@@ -184,8 +184,8 @@
         }
 
         .back-btn {
-            position: absolute; /* Takes button out of flow */
-            left: 0; /* Pins to left */
+            position: absolute; 
+            left: 0; 
             top: 50%;
             transform: translateY(-50%);
             display: flex;
@@ -300,7 +300,7 @@
         .movie-card:hover { border-color: var(--c-indigo); }
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 56.25%; 
             height: 0;
             overflow: hidden;
             background: #000;
@@ -342,7 +342,7 @@
             .logo-middle { font-size: 0.8rem; letter-spacing: 6px; }
             .masonry-grid { column-count: 2; }
             .page-title { font-size: 1.8rem; }
-            .back-btn span { display: none; } /* Hide text "Back" on small screens, keep icon */
+            .back-btn span { display: none; } 
         }
     </style>
 </head>
@@ -528,11 +528,9 @@
             const t = translations[currentLang];
             const colorVar = `var(--c-${getColorVar(type)})`;
 
-            // Set Title & Color
             title.innerText = t[type] || type.toUpperCase();
             title.style.color = colorVar;
 
-            // Generate Content
             let html = '';
 
             if (type === 'learn') {
@@ -551,14 +549,13 @@
                 html += `
                     <div class="studio-alert">
                         <i class="fa-solid fa-circle-exclamation" style="margin-bottom:10px; font-size:1.5rem;"></i><br>
-                        ${t.studioAlert}
+                        <span data-key="studioAlert">${t.studioAlert}</span>
                         <br>
-                        <a href="https://t.me/r2stud" target="_blank" class="studio-link">${t.joinGroup}</a>
+                        <a href="https://t.me/r2stud" target="_blank" class="studio-link" data-key="joinGroup">${t.joinGroup}</a>
                     </div>
-                    <h3 style="color:#fff; border-bottom:1px solid #333; padding-bottom:10px; margin-top:40px;">${t.studioFiles}</h3>
+                    <h3 style="color:#fff; border-bottom:1px solid #333; padding-bottom:10px; margin-top:40px;" data-key="studioFiles">${t.studioFiles}</h3>
                     <div class="file-list">
                 `;
-                // Inject Content
                 if(studioContent.length > 0) studioContent.forEach(item => html += item.html);
                 else html += `<p style="color:#444; text-align:center; padding:20px;">No files available yet.</p>`;
                 
@@ -590,7 +587,6 @@
                 html += `</div>`;
             }
             else {
-                // Coming Soon
                 html = `
                     <div class="cs-wrapper">
                         <i class="fa-solid fa-person-digging" style="font-size:4rem; color:${colorVar}; margin-bottom:20px;"></i>
@@ -601,7 +597,6 @@
 
             content.innerHTML = html;
 
-            // Animation
             home.style.opacity = '0';
             setTimeout(() => {
                 home.style.display = 'none';
